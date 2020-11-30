@@ -2,4 +2,6 @@
 
 Chicago Food Instagram Crawler.
 
-[Proposal](./proposal.md)
+- [Proposal](./proposal.md)
+
+- [Progress Report](./progress-report.md)
