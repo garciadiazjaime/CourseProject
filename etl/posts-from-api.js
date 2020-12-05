@@ -9,6 +9,10 @@ function getDBClient() {
   console.log('db', config.get('db.url'))
   return new Promise(resolve => {
     MongoClient.connect(config.get('db.url'), function(err, client) {
+      if (err) {
+        console.log(err)
+        debug(err)
+      }
       resolve(client)
     }); 
   })
