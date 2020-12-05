@@ -16,7 +16,8 @@
   "scripts": {
     "start": "node ./main.js",
     "crawler": "node ./etl/posts-from-api",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "git push heroku"
   },
   "repository": {
     "type": "git",
