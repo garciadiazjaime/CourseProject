@@ -88,6 +88,7 @@ function savePosts(dbClient, posts) {
 }
 
 async function main() {
+  console.log('postsFromAPI')
   const hashtag = config.get('instagram.hashtag')
 
   const response = await extract(hashtag);
