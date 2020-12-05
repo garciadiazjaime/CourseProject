@@ -6,11 +6,9 @@ const mapSeries = require('async/mapSeries');
 const config = require('../config');
 
 function getDBClient() {
-  console.log('db', config.get('db.url'))
   return new Promise(resolve => {
     MongoClient.connect(config.get('db.url'), function(err, client) {
       if (err) {
-        console.log(err)
         debug(err)
       }
       resolve(client)
@@ -93,15 +91,13 @@ function savePosts(dbClient, posts) {
 }
 
 async function main() {
-  console.log('postsFromAPI')
   const hashtag = config.get('instagram.hashtag')
 
   const response = await extract(hashtag);
   const posts = await transform(response, hashtag);
-  console.log('posts', posts)
+
   if (!Array.isArray(posts) || !posts.length) {
-    debug(response)
-    return null
+    return debug(response)
   }
 
   const dbClient = await getDBClient()

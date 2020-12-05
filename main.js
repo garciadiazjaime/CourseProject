@@ -1,3 +1,4 @@
+const debug = require('debug')('app:main');
 const cron = require('node-cron');
 const express = require('express')
 
@@ -6,13 +7,13 @@ const PORT = process.env.PORT || 5000
 
 express()
   .get('/', (req, res) => res.render(':)'))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+  .listen(PORT, () => debug(`Listening on ${ PORT }`))
 
 const postsFromAPI = require('./etl/posts-from-api')
 
 function main() {
-  console.log('executing main')
   cron.schedule('*/5 * * * *', async () => {
+    debug('postsFromAPI')
     await postsFromAPI();
   });
 }
