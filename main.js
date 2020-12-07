@@ -4,12 +4,12 @@ const express = require('express')
 const fetch = require('node-fetch');
 
 const path = require('path')
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000
 
 express()
   .get('/', (req, res) => {
     debug('homepage')
-    return res.render(':)')
+    return res.json({ msg: ':)' })
   })
   .listen(PORT, () => debug(`Listening on ${ PORT }`))
 
