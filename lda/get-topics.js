@@ -7,25 +7,25 @@ const { Place } = require('../database/models')
 
 const stub = require('./stub')
 
-async function main() {
-  
-  const places = stub //await Place.find().limit(1)
-  
-  // const places = await Place.find().limit(5)
-  // await openDB()
-  // console.log(places)
+function getTopics(data) {
+  const documents = data.match( /[^\.!\?]+[\.!\?]+/g);
 
-  if(!Array.isArray(places) || !places.length) {
-    debug(places)
-  }
+  return lda(documents, 1, 10);
+}
+
+async function main(document) {
+  
+  const places = stub 
+  
+  // await openDB()
+  // const places = await Place.find().limit(1)
+  // console.log(places)
 
   places.map(place => {
     console.log(place.caption)
-    const documents = place.caption.match( /[^\.!\?]+[\.!\?]+/g );
-
-    const result = lda(documents, 1, 10);
-
-    console.log(result)
+    
+    const topics = getTopics(place.caption)
+    console.log(topics)
   })
 }
 
@@ -35,4 +35,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = main;
+module.exports = getTopics;

@@ -2,26 +2,47 @@ const debug = require('debug')('app:main');
 const cron = require('node-cron');
 const express = require('express')
 const fetch = require('node-fetch');
+const bodyParser = require('body-parser');
 
-const path = require('path')
+const postsFromAPI = require('./etl/posts-from-api')
+const { getPlacesFromCategory } = require('./routes/places')
+
 const PORT = process.env.PORT || 3000
 
-express()
+let app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app
   .get('/', (req, res) => {
     debug('homepage')
     return res.json({ msg: ':)' })
   })
-  .listen(PORT, () => debug(`Listening on ${ PORT }`))
+  .get('/search', async (req, res) => {
+    const { category } = req.query
 
-const postsFromAPI = require('./etl/posts-from-api')
+    if (!category) {
+      return res.json({msg: 'EMPTY_CATEGORY'})
+    }
 
-function main() {
+    const places = await getPlacesFromCategory(category)
+
+    return res.json(places)
+  })
+
+function setupCron() {
   cron.schedule('*/5 * * * *', async () => {
     await fetch('https://chicago-food-20.herokuapp.com/');
 
     debug('postsFromAPI')
     await postsFromAPI();
   });
+}
+
+function main() {
+  setupCron()
+
+  app.listen(PORT, () => debug(`Listening on ${ PORT }`))
 }
 
 main()

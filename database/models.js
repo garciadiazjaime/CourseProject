@@ -11,6 +11,8 @@ const PlaceSchema = new Schema({
   mediaUrl: String,
   mediaType: String,
   source: String
+}, {
+  timestamps: true
 });
 
 const Place = mongoose.model('Place', PlaceSchema);
