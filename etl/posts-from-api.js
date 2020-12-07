@@ -1,10 +1,10 @@
 const debug = require('debug')('app:crawler');
 const fetch = require('node-fetch');
-const MongoClient = require('mongodb').MongoClient;
 const mapSeries = require('async/mapSeries');
 
 const config = require('../config');
-const { getDBClient } = require('../support')
+const { openDB } = require('../database')
+const { Place } = require('../database/models')
 
 
 async function extract(hashtag) {
@@ -39,45 +39,28 @@ function transform(data, hashtag) {
   }, []);
 }
 
-function savePosts(dbClient, posts) {
-  return new Promise(async (resolve) => {
-    const collection = dbClient.db("mintitmedia").collection("places");
-    const newPost = []
+async function savePosts(posts) {
+  debug(`places: ${posts.length}`)
 
-    debug(`places: ${posts.length}`)
+  const newPost = []
 
-    const promises = await mapSeries(posts, async post => {
-      return new Promise(resolveUpdate => {
-        collection.find({ id : post.id }).toArray((err, docs) => {
-          if (err) {
-            debug(err)
-          }
-
-          if (Array.isArray(docs) && !docs.length) {
-            newPost.push(post)
-          }
-
-          resolveUpdate()
-        });
-      })
-    })
-
-    await Promise.all(promises)
-
-    debug(`new: ${newPost.length}`)
+  const promises = await mapSeries(posts, async post => {
+    const places = await Place.find({ id : post.id })
     
-    if (newPost.length) {
-      collection.insertMany(newPost, function(err) {
-        if (err) {
-          return debug(err)
-        }
-
-        resolve();
-      });
-    } else {
-      resolve()
+    if (Array.isArray(places) && !places.length) {
+      newPost.push(post)
     }
   })
+
+  await Promise.all(promises)
+
+  debug(`new: ${newPost.length}`)
+  
+  if (newPost.length) {
+    const newPromises = await mapSeries(newPost, async post => Place(post).save())
+
+    await Promise.all(newPromises)
+  }
 }
 
 async function main() {
@@ -90,11 +73,9 @@ async function main() {
     return debug(response)
   }
 
-  const dbClient = await getDBClient()
+  await openDB()
 
-  await savePosts(dbClient, posts)
-
-  dbClient.close();
+  await savePosts(posts)
 }
 
 if (require.main === module) {
