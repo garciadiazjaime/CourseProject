@@ -4,17 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const mapSeries = require('async/mapSeries');
 
 const config = require('../config');
-
-function getDBClient() {
-  return new Promise(resolve => {
-    MongoClient.connect(config.get('db.url'), function(err, client) {
-      if (err) {
-        debug(err)
-      }
-      resolve(client)
-    }); 
-  })
-}
+const { getDBClient } = require('../support')
 
 
 async function extract(hashtag) {
