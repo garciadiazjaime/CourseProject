@@ -73,13 +73,13 @@ async function main() {
     return debug(response)
   }
 
-  await openDB()
-
   await savePosts(posts)
 }
 
 if (require.main === module) {
-  main().then(() => {
+  openDB()
+    .then(main)
+    .then(() => {
     process.exit(0);
   });
 }

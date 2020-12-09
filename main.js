@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const postsFromAPI = require('./etl/posts-from-api')
 const { getPlacesFromCategory } = require('./routes/places')
+const { openDB } = require('./database')
 
 const PORT = process.env.PORT || 3000
 
@@ -22,7 +23,7 @@ app
     const { category } = req.query
 
     if (!category) {
-      return res.json({msg: 'EMPTY_CATEGORY'})
+      return res.json({ msg: 'EMPTY_CATEGORY' })
     }
 
     const places = await getPlacesFromCategory(category)
@@ -31,7 +32,7 @@ app
   })
 
 function setupCron() {
-  cron.schedule('*/5 * * * *', async () => {
+  cron.schedule('*/10 * * * *', async () => {
     await fetch('https://chicago-food-20.herokuapp.com/');
 
     debug('postsFromAPI')
@@ -39,8 +40,10 @@ function setupCron() {
   });
 }
 
-function main() {
+async function main() {
   setupCron()
+
+  await openDB()
 
   app.listen(PORT, () => debug(`Listening on ${ PORT }`))
 }
