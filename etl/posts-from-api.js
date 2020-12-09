@@ -22,6 +22,10 @@ function transform(data, hashtag) {
   }
 
   return data.data.reduce((accu, item) => {
+    if (!item.caption) {
+      return accu
+    }
+
     const mediaUrl = item.media_type === 'CAROUSEL_ALBUM' ? item.children.data[0].media_url : item.media_url;
 
     accu.push({

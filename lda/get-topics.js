@@ -26,6 +26,10 @@ function extractTopics(data) {
 }
 
 function getTopics(data) {
+  if (!data) {
+    return []
+  }
+
   const topics = extractTopics(data)
 
   return transform(topics);

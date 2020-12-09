@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const express = require('express')
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
+const morgan = require('morgan')
 
 const postsFromAPI = require('./etl/posts-from-api')
 const { getPlacesFromCategory } = require('./routes/places')
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000
 let app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(morgan('combined'))
 
 app
   .get('/', (req, res) => {
