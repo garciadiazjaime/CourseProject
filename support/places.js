@@ -16,6 +16,31 @@ async function getPlacesFromCategory(category) {
   return placesWithTopics.filter(place => place.topics.includes(category))
 }
 
+async function getTopicsFromPlaces() {
+  const places = await Place.find({}).sort({createdAt: -1}).limit(500)
+
+  const topics = places.reduce((accu, place) => {
+
+    getTopics(place.caption).forEach(topic => {
+      if (!accu[topic]) {
+        accu[topic] = 0
+      }
+
+      accu[topic] += 1
+    })
+
+    return accu
+  }, {})
+
+  const rank = Object.keys(topics)
+    .map(key => [key, topics[key]])
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20)
+
+  return rank
+}
+ 
 module.exports = {
-  getPlacesFromCategory
+  getPlacesFromCategory,
+  getTopicsFromPlaces
 }

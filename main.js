@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan')
 
 const postsFromAPI = require('./etl/posts-from-api')
-const { getPlacesFromCategory } = require('./routes/places')
+const { getPlacesFromCategory, getTopicsFromPlaces } = require('./support/places')
 const { openDB } = require('./database')
 
 const PORT = process.env.PORT || 3000
@@ -32,9 +32,14 @@ app
 
     return res.json(places)
   })
+  .get('/topics', async (req, res) => {
+      const topics = await getTopicsFromPlaces()
+
+      return res.json(topics)
+  })
 
 function setupCron() {
-  cron.schedule('*/10 * * * *', async () => {
+  cron.schedule('*/15 * * * *', async () => {
     await fetch('https://chicago-food-20.herokuapp.com/');
 
     debug('postsFromAPI')
