@@ -33,7 +33,7 @@ app
     }
 
     let places = myCache.get('getPlacesFromCategory')
-    if (!topics) {
+    if (!places) {
       places = await getPlacesFromCategory(category)
       myCache.set('getPlacesFromCategory', places, secondsInAnHour)
     }
