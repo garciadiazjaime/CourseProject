@@ -4,12 +4,16 @@ const express = require('express')
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const morgan = require('morgan')
+const NodeCache = require( "node-cache" );
+const myCache = new NodeCache();
 
 const postsFromAPI = require('./etl/posts-from-api')
 const { getPlacesFromCategory, getTopicsFromPlaces } = require('./support/places')
 const { openDB } = require('./database')
 
 const PORT = process.env.PORT || 3000
+
+const secondsInAnHour = 60 * 60
 
 let app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,12 +32,21 @@ app
       return res.json({ msg: 'EMPTY_CATEGORY' })
     }
 
-    const places = await getPlacesFromCategory(category)
+    let places = myCache.get('getPlacesFromCategory')
+    if (!topics) {
+      places = await getPlacesFromCategory(category)
+      myCache.set('getPlacesFromCategory', places, secondsInAnHour)
+    }
 
     return res.json(places)
   })
   .get('/topics', async (req, res) => {
-      const topics = await getTopicsFromPlaces()
+      let topics = myCache.get('getTopicsFromPlaces')
+
+      if (!topics) {
+        topics = await getTopicsFromPlaces()
+        myCache.set('getTopicsFromPlaces', topics, secondsInAnHour)
+      }
 
       return res.json(topics)
   })
