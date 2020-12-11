@@ -22,7 +22,7 @@ function transform(data, hashtag) {
   }
 
   return data.data.reduce((accu, item) => {
-    if (!item.caption) {
+    if (!item.caption || item.media_type === 'VIDEO') {
       return accu
     }
 

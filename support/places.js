@@ -2,7 +2,7 @@ const { Place } = require('../database/models')
 const { getTopics } = require('../lda/get-topics')
 
 async function getPlacesFromCategory(category) {
-  const places = await Place.find({}).sort({createdAt: -1}).limit(100)
+  const places = await Place.find({}).sort({createdAt: -1}).limit(500)
 
   const placesWithTopics = places.map(place => ({
     id: place.id,
@@ -13,7 +13,7 @@ async function getPlacesFromCategory(category) {
   }))
   // console.log(placesWithTopics)
 
-  return placesWithTopics.filter(place => place.topics.includes(category))
+  return placesWithTopics.filter(place => place.topics.includes(category)).slice(0, 15)
 }
 
 async function getTopicsFromPlaces() {
@@ -35,7 +35,7 @@ async function getTopicsFromPlaces() {
   const rank = Object.keys(topics)
     .map(key => [key, topics[key]])
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 20)
+    .slice(0, 15)
 
   return rank
 }

@@ -4,6 +4,7 @@ const express = require('express')
 const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const morgan = require('morgan')
+const cors = require('cors')
 const NodeCache = require( "node-cache" );
 const myCache = new NodeCache();
 
@@ -11,7 +12,7 @@ const postsFromAPI = require('./etl/posts-from-api')
 const { getPlacesFromCategory, getTopicsFromPlaces } = require('./support/places')
 const { openDB } = require('./database')
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3030
 
 const secondsInAnHour = 60 * 60
 
@@ -25,22 +26,23 @@ app
     debug('homepage')
     return res.json({ msg: ':)' })
   })
-  .get('/search', async (req, res) => {
+  .get('/search', cors(), async (req, res) => {
     const { category } = req.query
 
     if (!category) {
       return res.json({ msg: 'EMPTY_CATEGORY' })
     }
 
-    let places = myCache.get('getPlacesFromCategory')
+    const key = `getPlacesFromCategory:${category}`
+    let places = myCache.get(key)
     if (!places) {
       places = await getPlacesFromCategory(category)
-      myCache.set('getPlacesFromCategory', places, secondsInAnHour)
+      myCache.set(key, places, secondsInAnHour)
     }
 
     return res.json(places)
   })
-  .get('/topics', async (req, res) => {
+  .get('/topics', cors(), async (req, res) => {
       let topics = myCache.get('getTopicsFromPlaces')
 
       if (!topics) {

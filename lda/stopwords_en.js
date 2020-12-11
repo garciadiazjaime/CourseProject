@@ -691,5 +691,14 @@ exports.stop_words = [
   'enjoy',
   'special',
   'visit',
-  'happy'
+  'happy',
+  'open',
+  'support',
+  'thursday',
+  'bio',
+  'pick',
+  'delivery',
+  'pickup',
+  'online',
+  'menu',
 ];
