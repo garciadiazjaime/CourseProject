@@ -1,3 +1,7 @@
+
+const mapSeries = require('async/mapSeries');
+const { ObjectID } = require('mongodb');
+
 const { Place, Choice } = require('../database/models')
 const { getTopics } = require('../lda/get-topics')
 
@@ -46,9 +50,22 @@ async function addChoice(id, topic) {
 
   return Choice({ id, topic}).save()
 }
+
+async function removeDuplicates() {
+  const places = await Place.aggregate([
+    { $group: { _id: "$id", count: { $sum: 1}, id: { $first: "$_id"} }}, 
+    { $match: { count: { $gt: 1 }}}, 
+    { $sort: { count: -1 }},
+  ]);
+  
+  const promises = await mapSeries(places, place => Place.findOneAndRemove({ _id: ObjectID(place.id)})) 
+
+  await Promise.all(promises)
+}
  
 module.exports = {
   getPlacesFromCategory,
   getTopicsFromPlaces,
   addChoice,
+  removeDuplicates,
 }
