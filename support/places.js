@@ -1,4 +1,4 @@
-const { Place } = require('../database/models')
+const { Place, Choice } = require('../database/models')
 const { getTopics } = require('../lda/get-topics')
 
 async function getPlacesFromCategory(category) {
@@ -11,7 +11,6 @@ async function getPlacesFromCategory(category) {
     mediaUrl: place.mediaUrl,
     topics: getTopics(place.caption),
   }))
-  // console.log(placesWithTopics)
 
   return placesWithTopics.filter(place => place.topics.includes(category)).slice(0, 15)
 }
@@ -39,8 +38,17 @@ async function getTopicsFromPlaces() {
 
   return rank
 }
+
+async function addChoice(id, topic) {
+  if (!id || !topic) {
+    return null
+  }
+
+  return Choice({ id, topic}).save()
+}
  
 module.exports = {
   getPlacesFromCategory,
-  getTopicsFromPlaces
+  getTopicsFromPlaces,
+  addChoice,
 }

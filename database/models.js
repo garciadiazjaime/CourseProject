@@ -10,13 +10,20 @@ const PlaceSchema = new Schema({
   caption: String,
   mediaUrl: String,
   mediaType: String,
-  source: String
+  source: String,
 }, {
   timestamps: true
 });
 
+const ChoiceSchema = new Schema({
+  id: String,
+  topic: String
+})
+
 const Place = mongoose.model('Place', PlaceSchema);
+const Choice = mongoose.model('Choice', ChoiceSchema)
 
 module.exports = {
-  Place
+  Place,
+  Choice,
 }

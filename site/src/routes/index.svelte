@@ -25,9 +25,18 @@
 
 	async function optionClickHandler() {
 		const permalink = this.attributes['data-url'].value
-		// const id = this.attributes['data-id'].value
+		const id = this.attributes['data-id'].value
 
 		window.open(permalink)
+		
+		await fetch(`process.API_URL/choice`, {
+			method: 'POST',
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ id, topic: selectedTopic })
+		});	
 	}
 </script>
 

@@ -49,7 +49,7 @@ async function savePosts(posts) {
   const newPost = []
 
   const promises = await mapSeries(posts, async post => {
-    const places = await Place.find({ id : post.id })
+    const places = await Place.find({ $or: [{ id: post.id }, { permalink: post.permalink }] })
     
     if (Array.isArray(places) && !places.length) {
       newPost.push(post)
@@ -61,7 +61,7 @@ async function savePosts(posts) {
   debug(`new: ${newPost.length}`)
   
   if (newPost.length) {
-    const newPromises = await mapSeries(newPost, async post => Place(post).save())
+    const newPromises = await mapSeries(newPost, post => Place(post).save())
 
     await Promise.all(newPromises)
   }
