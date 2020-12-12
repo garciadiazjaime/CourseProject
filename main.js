@@ -23,7 +23,6 @@ app.use(morgan('combined'))
 
 app
   .get('/', (req, res) => {
-    debug('homepage')
     return res.json({ msg: ':)' })
   })
   .get('/search', cors(), async (req, res) => {
@@ -54,18 +53,19 @@ app
   })
 
 function setupCron() {
-  cron.schedule('*/15 * * * *', async () => {
-    await fetch('https://chicago-food-20.herokuapp.com/');
-
-    debug('postsFromAPI')
+  cron.schedule('*/30 * * * *', async () => {
     await postsFromAPI();
+  });
+
+  cron.schedule('*/10 * * * *', async () => {
+    await fetch('https://chicago-food-20.herokuapp.com/');
   });
 }
 
 async function main() {
-  setupCron()
-
   await openDB()
+
+  setupCron()
 
   app.listen(PORT, () => debug(`Listening on ${ PORT }`))
 }
