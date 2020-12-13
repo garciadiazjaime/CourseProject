@@ -6,11 +6,11 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan')
 const cors = require('cors')
 const mapSeries = require('async/mapSeries');
-const NodeCache = require( "node-cache" );
+const NodeCache = require('node-cache');
 const myCache = new NodeCache();
 
 const postsFromAPI = require('./etl/posts-from-api')
-const { getPlacesFromCategory, getTopicsFromPlaces, addChoice } = require('./support/places')
+const { getPlacesFromTopic, getTopicsFromPlaces, addChoice } = require('./support/places')
 const { openDB } = require('./database');
 const config = require('./config');
 
@@ -31,17 +31,18 @@ app
   })
   .get('/topics', async (req, res) => {
     const cacheKey = 'getTopicsFromPlaces'
-      let topics = myCache.get(cacheKey)
+    let topics = myCache.get(cacheKey)
 
-      if (!topics) {
-        topics = await getTopicsFromPlaces()
+    if (!topics) {
+      debug('EMTPY_CACHE_FOR_TOPICS')
+      topics = await getTopicsFromPlaces()
 
-        if (Array.isArray(topics) && topics.length) {
-          myCache.set(cacheKey, topics, secondsInAnHour)
-        }
+      if (Array.isArray(topics) && topics.length) {
+        myCache.set(cacheKey, topics, secondsInAnHour)
       }
+    }
 
-      return res.json(topics)
+    return res.json(topics)
   })
   .get('/search', async (req, res) => {
     const { category } = req.query
@@ -50,11 +51,12 @@ app
       return res.json({ msg: 'EMPTY_CATEGORY' })
     }
 
-    const cacheKey = `getPlacesFromCategory:${category}`
+    const cacheKey = `getPlacesFromTopic:${category}`
     let places = myCache.get(cacheKey)
 
     if (!places) {
-      places = await getPlacesFromCategory(category)
+      debug('EMTPY_CACHE_FOR_SEARCH')
+      places = await getPlacesFromTopic(category)
 
       if (Array.isArray(places) && places.length) {
         myCache.set(cacheKey, places, secondsInAnHour)
@@ -97,10 +99,27 @@ async function refreshSearches() {
     return debug('REFRESH_NOT_SETUP')
   }
 
-  const response = await fetch(`${API_URL}/topics`);
-  const topics = await response.json()
+  const topics = await getTopicsFromPlaces()
 
-  const responses = await mapSeries(topics, async (topic) => fetch(`${API_URL}/search?category=${topic[0]}`))
+  if (Array.isArray(topics) && topics.length) {
+    const cacheKey = 'getTopicsFromPlaces'
+    debug('TOPICS_UPDATED')
+    if (!myCache.ttl(cacheKey, secondsInAnHour )) {
+      myCache.set(cacheKey, topics, secondsInAnHour)
+    }
+  }
+
+  const responses = await mapSeries(topics, async ([topic]) => {
+    const places = await getPlacesFromTopic(topic)
+
+    if (Array.isArray(places) && places.length) {
+      const cacheKey = `getPlacesFromTopic:${topic}`
+      debug(`PLACES_UPDATES:${topic}`)
+      if (!myCache.ttl(cacheKey, secondsInAnHour )) {
+        myCache.set(cacheKey, places, secondsInAnHour)
+      }
+    }
+  })
 
   await Promise.all(responses)
 }

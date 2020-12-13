@@ -5,7 +5,7 @@ const { ObjectID } = require('mongodb');
 const { Place, Choice } = require('../database/models')
 const { getTopics } = require('../lda/get-topics')
 
-async function getPlacesFromCategory(category) {
+async function getPlacesFromTopic(category) {
   const places = await Place.find({}).sort({createdAt: -1}).limit(500)
 
   const placesWithTopics = places.map(place => ({
@@ -64,7 +64,7 @@ async function removeDuplicates() {
 }
  
 module.exports = {
-  getPlacesFromCategory,
+  getPlacesFromTopic,
   getTopicsFromPlaces,
   addChoice,
   removeDuplicates,

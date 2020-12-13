@@ -725,4 +725,10 @@ exports.stop_words = [
   'shop',
   'treat',
   'eat',
+  'stay',
+  'sauce',
+  'winter',
+  'hot',
+  'style',
+  'side',
 ];
