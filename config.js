@@ -18,9 +18,9 @@ const config = convict({
   },
   db: {
     url: {
-      doc: 'API URL',
+      doc: 'DB URL',
       format: String,
-      default: 'http://127.0.0.1:3030',
+      default: '',
       env: 'DB_URL',
     },
   },

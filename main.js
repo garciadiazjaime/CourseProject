@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 const bodyParser = require('body-parser');
 const morgan = require('morgan')
 const cors = require('cors')
+const mapSeries = require('async/mapSeries');
 const NodeCache = require( "node-cache" );
 const myCache = new NodeCache();
 
@@ -13,6 +14,7 @@ const { getPlacesFromCategory, getTopicsFromPlaces, addChoice } = require('./sup
 const { openDB } = require('./database');
 const config = require('./config');
 
+const API_URL = config.get('api.url')
 const PORT = process.env.PORT || 3030
 
 const secondsInAnHour = 60 * 60
@@ -27,6 +29,20 @@ app
   .get('/', (req, res) => {
     return res.json({ msg: ':)' })
   })
+  .get('/topics', async (req, res) => {
+    const cacheKey = 'getTopicsFromPlaces'
+      let topics = myCache.get(cacheKey)
+
+      if (!topics) {
+        topics = await getTopicsFromPlaces()
+
+        if (Array.isArray(topics) && topics.length) {
+          myCache.set(cacheKey, topics, secondsInAnHour)
+        }
+      }
+
+      return res.json(topics)
+  })
   .get('/search', async (req, res) => {
     const { category } = req.query
 
@@ -34,24 +50,18 @@ app
       return res.json({ msg: 'EMPTY_CATEGORY' })
     }
 
-    const key = `getPlacesFromCategory:${category}`
-    let places = myCache.get(key)
+    const cacheKey = `getPlacesFromCategory:${category}`
+    let places = myCache.get(cacheKey)
+
     if (!places) {
       places = await getPlacesFromCategory(category)
-      myCache.set(key, places, secondsInAnHour)
+
+      if (Array.isArray(places) && places.length) {
+        myCache.set(cacheKey, places, secondsInAnHour)
+      }
     }
 
     return res.json(places)
-  })
-  .get('/topics', async (req, res) => {
-      let topics = myCache.get('getTopicsFromPlaces')
-
-      if (!topics) {
-        topics = await getTopicsFromPlaces()
-        myCache.set('getTopicsFromPlaces', topics, secondsInAnHour)
-      }
-
-      return res.json(topics)
   })
   .post('/choice', async (req, res) => {
     const { id, topic } = req.body
@@ -73,16 +83,38 @@ function setupCron() {
   });
 
   cron.schedule('*/10 * * * *', async () => {
-    await fetch('https://chicago-food-20.herokuapp.com/');
+    await fetch(API_URL);
   });
+
+  cron.schedule('2 * * * *', async () => {
+    debug('REFRESH_SEARCHES')
+    await refreshSearches()
+  });
+}
+
+async function refreshSearches() {
+  if (config.get('env') !== 'production') {
+    return debug('REFRESH_NOT_SETUP')
+  }
+
+  const response = await fetch(`${API_URL}/topics`);
+  const topics = await response.json()
+
+  const responses = await mapSeries(topics, async (topic) => fetch(`${API_URL}/search?category=${topic[0]}`))
+
+  await Promise.all(responses)
 }
 
 async function main() {
   await openDB()
 
-  setupCron()
+  app.listen(PORT, async () => {
+    debug(`Listening on ${ PORT }`)
 
-  app.listen(PORT, () => debug(`Listening on ${ PORT }`))
+    setupCron()
+
+    await refreshSearches()
+  })
 }
 
 main()
