@@ -731,4 +731,5 @@ exports.stop_words = [
   'hot',
   'style',
   'side',
+  'red',
 ];

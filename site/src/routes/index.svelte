@@ -46,7 +46,7 @@
 		list-style-type: none;
 		padding: 0;
 		width: 100%;
-		margin-top: 60px;
+		margin-top: 20px;
 	}
 
 	.topics-list li {
@@ -54,7 +54,7 @@
 		width: 33%;
 		font-size: 3em;
 		border: 1px solid #EEE;
-		padding: 22px 0px;
+		padding: 16px 0px;
 		text-align: center;
 		opacity: .8;
 	}
