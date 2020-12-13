@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import Lazy from 'svelte-lazy';
 
 	let topics = []
 	let options = []
@@ -154,7 +155,9 @@
 	<ul class="options-list">
 		{#each options as option}
 		<li>
-			<img src={option.mediaUrl} alt="" />
+			<Lazy height={300}>
+				<img src={option.mediaUrl} alt="" />
+			</Lazy>
 			<div on:click={optionClickHandler} data-url={option.permalink} data-id={option.id}>See more</div>
 		</li>
 		{/each}
