@@ -732,4 +732,5 @@ exports.stop_words = [
   'style',
   'side',
   'red',
+  'options',
 ];
