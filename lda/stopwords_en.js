@@ -722,4 +722,7 @@ exports.stop_words = [
   'served',
   'ready',
   'topped',
+  'shop',
+  'treat',
+  'eat',
 ];

@@ -58,9 +58,9 @@ async function removeDuplicates() {
     { $sort: { count: -1 }},
   ]);
   
-  const promises = await mapSeries(places, place => Place.findOneAndRemove({ _id: ObjectID(place.id)})) 
+  const promises = await mapSeries(places, async place => Place.findOneAndRemove({ _id: ObjectID(place.id)})) 
 
-  await Promise.all(promises)
+  return Promise.all(promises)
 }
  
 module.exports = {

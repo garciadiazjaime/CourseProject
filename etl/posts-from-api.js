@@ -28,7 +28,7 @@ function transform(data, hashtag) {
 
     const mediaUrl = item.media_type === 'CAROUSEL_ALBUM' ? item.children.data[0].media_url : item.media_url;
 
-    if (mediaUrl.includes('video')) {
+    if (!mediaUrl || mediaUrl.includes('video')) {
       return accu
     }
 

@@ -10,7 +10,8 @@ const myCache = new NodeCache();
 
 const postsFromAPI = require('./etl/posts-from-api')
 const { getPlacesFromCategory, getTopicsFromPlaces, addChoice } = require('./support/places')
-const { openDB } = require('./database')
+const { openDB } = require('./database');
+const config = require('./config');
 
 const PORT = process.env.PORT || 3030
 
@@ -63,7 +64,11 @@ app
   })
 
 function setupCron() {
-  cron.schedule('*/30 * * * *', async () => {
+  if (config.get('env') !== 'production') {
+    return debug('CRON_NOT_SETUP')
+  }
+
+  cron.schedule('*/20 * * * *', async () => {
     await postsFromAPI();
   });
 
