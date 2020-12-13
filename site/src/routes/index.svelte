@@ -87,7 +87,7 @@
 		position: absolute;
     bottom: 6px;
     width: 100%;
-    height: 17%;
+    height: 25%;
     background-color: black;
     color: white;
     display: flex;
