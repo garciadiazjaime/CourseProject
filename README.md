@@ -6,7 +6,9 @@ Chicago Food Instagram Crawler.
 
 - [Progress Report](./progress-report.md)
 
-- [Presentation - Documentation](https://youtu.be/O4tsm1fQ6vs)
+- [Documentation](https://chicago-food.mintitmedia.com/about/)
+
+- [Presentation](https://youtu.be/O4tsm1fQ6vs)
 
 - [Demo](https://chicago-food.mintitmedia.com/)
 
