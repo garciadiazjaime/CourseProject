@@ -65,7 +65,16 @@ async function removeDuplicates() {
 
 async function updatePost(id, update) {
   const filter = { id }
+
   return await Place.findOneAndUpdate(filter, update)
+}
+
+async function deletePost(id) {
+  const filter = { id }
+
+  await Choice.deleteMany(filter)
+
+  return Place.deleteMany(filter)
 }
  
 module.exports = {
@@ -74,4 +83,5 @@ module.exports = {
   addChoice,
   removeDuplicates,
   updatePost,
+  deletePost,
 }

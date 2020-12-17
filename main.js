@@ -10,7 +10,7 @@ const NodeCache = require('node-cache');
 const myCache = new NodeCache();
 
 const postsFromAPI = require('./etl/posts-from-api')
-const { getPlacesFromTopic, getTopicsFromPlaces, addChoice, updatePost } = require('./support/places')
+const { getPlacesFromTopic, getTopicsFromPlaces, addChoice, updatePost, deletePost } = require('./support/places')
 const { openDB } = require('./database');
 const config = require('./config');
 
@@ -81,6 +81,15 @@ app
     const response = await updatePost(id, data)
     
     const msg = !response ? 'ERROR' : 'POST_UPDATED'
+
+    return res.json({ msg })
+  })
+  .delete('/post/:id', async (req, res) => {
+    const { id } = req.params
+
+    const response = await deletePost(id)
+    
+    const msg = !response ? 'ERROR' : 'POST_DELETED'
 
     return res.json({ msg })
   })

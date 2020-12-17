@@ -1,4 +1,4 @@
-import { updatePost } from './service-client'
+import { updatePost, deletePost } from './service-client'
 
 function pickOne(posts) {
   return posts[Math.floor(Math.random() * posts.length)]
@@ -56,7 +56,16 @@ async function validatePosts(posts) {
   const post = pickOne(posts)
   const { permalink } = post
   
-  const html = await extract(permalink)  
+  const html = await extract(permalink)
+
+  if (html.includes('Login')) {
+    return null
+  }
+
+  if (html.includes('Page Not Found')) {
+    return deletePost(post.id)
+  }
+
   const data = transform(html)
 
   if (!data) {

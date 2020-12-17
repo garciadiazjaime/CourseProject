@@ -7,9 +7,19 @@ async function updatePost(id, body) {
     },
     body: JSON.stringify(body)
   });	
+}
 
+async function deletePost(id) {
+  await fetch(`process.API_URL/post/${id}`, {
+    method: 'DELETE',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });	
 }
 
 export {
-  updatePost
+  updatePost,
+  deletePost,
 }
