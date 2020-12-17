@@ -2,6 +2,16 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
+const UserSchema = new Schema({
+  username: String,
+  description: String
+})
+
+const LocationSchema = new Schema({
+  name: String,
+  url: String
+})
+
 const PlaceSchema = new Schema({
   id: String,
   likeCount: Number,
@@ -11,6 +21,9 @@ const PlaceSchema = new Schema({
   mediaUrl: String,
   mediaType: String,
   source: String,
+
+  user: UserSchema,
+  location: LocationSchema,
 }, {
   timestamps: true
 });

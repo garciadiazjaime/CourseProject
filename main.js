@@ -10,7 +10,7 @@ const NodeCache = require('node-cache');
 const myCache = new NodeCache();
 
 const postsFromAPI = require('./etl/posts-from-api')
-const { getPlacesFromTopic, getTopicsFromPlaces, addChoice } = require('./support/places')
+const { getPlacesFromTopic, getTopicsFromPlaces, addChoice, updatePost } = require('./support/places')
 const { openDB } = require('./database');
 const config = require('./config');
 
@@ -71,6 +71,16 @@ app
     const response = await addChoice(id, topic)
     
     const msg = !response ? 'ERROR' : 'CHOICE_ADDED'
+
+    return res.json({ msg })
+  })
+  .post('/post/:id', async (req, res) => {
+    const id = req.params.id
+    const data = req.body
+
+    const response = await updatePost(id, data)
+    
+    const msg = !response ? 'ERROR' : 'POST_UPDATED'
 
     return res.json({ msg })
   })

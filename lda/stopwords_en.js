@@ -736,4 +736,5 @@ exports.stop_words = [
   'de',
   'la',
   'local',
+  'follow',
 ];

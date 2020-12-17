@@ -62,10 +62,16 @@ async function removeDuplicates() {
 
   return Promise.all(promises)
 }
+
+async function updatePost(id, update) {
+  const filter = { id }
+  return await Place.findOneAndUpdate(filter, update)
+}
  
 module.exports = {
   getPlacesFromTopic,
   getTopicsFromPlaces,
   addChoice,
   removeDuplicates,
+  updatePost,
 }

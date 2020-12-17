@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import Lazy from 'svelte-lazy';
 
+	import { validatePosts } from '../support/post'
+
 	let topics = []
 	let options = []
 	let showOptions = false
@@ -22,6 +24,8 @@
 
 		const res = await fetch(`process.API_URL/search?category=${topic}`);
 		options = await res.json();
+
+		validatePosts(options)
 	}
 
 	async function optionClickHandler() {
@@ -181,5 +185,5 @@
 </div>
 
 <p>
-	Our food options for Chicago change frequently based on what posts on Instagram are about.
+	Our food options for Chicago change frequently based on what recent posts on Instagram are about.
 </p>
