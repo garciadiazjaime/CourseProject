@@ -131,11 +131,19 @@
 </style>
 
 <svelte:head>
-	<title>Chicago Food Helper</title>
+	<title>#feedmechicago | Chicago food options based on what Instragram users are posting.</title>
+	<meta content="Chicago food options based on what users are posting on Instagram" property="og:description">
 </svelte:head>
 
+<h1>
+	What to eat in Chicago?
+</h1>
+<p>
+	#feedmechicago collects and analyzes data from Instagram posts about Chicago Food in the hope to help you find something delicious to eat in beautiful Chitown.
+</p>
+
 {#if topics.length }
-<h1>Choose an option (topic):</h1>
+<h1>Food Options:</h1>
 <ul class="topics-list">
 	{#each topics as topic}
 	<li on:click={clickHandler} class:selected={selectedTopic === topic[0]}>{topic[0]}</li>
@@ -171,3 +179,7 @@
 	</div>
 	{/if}
 </div>
+
+<p>
+	Our food options for Chicago change frequently based on what posts on Instagram are about.
+</p>

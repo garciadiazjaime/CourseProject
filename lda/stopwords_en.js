@@ -733,4 +733,7 @@ exports.stop_words = [
   'side',
   'red',
   'options',
+  'de',
+  'la',
+  'local',
 ];
