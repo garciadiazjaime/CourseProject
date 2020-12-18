@@ -738,4 +738,5 @@ exports.stop_words = [
   'local',
   'follow',
   'recipe',
+  'takeout',
 ];
