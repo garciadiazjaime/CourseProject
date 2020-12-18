@@ -58,7 +58,7 @@ async function validatePosts(posts) {
   
   const html = await extract(permalink)
 
-  if (html.includes('Login')) {
+  if (html.includes('Login • Instagram')) {
     return null
   }
 
