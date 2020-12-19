@@ -135,8 +135,8 @@
 </style>
 
 <svelte:head>
-	<title>#feedmechicago | Chicago food options based on what Instragram users are posting.</title>
-	<meta content="Chicago food options based on what users are posting on Instagram" property="og:description">
+	<title>#feedmechicago | What to eat in Chicago</title>
+	<meta name="description" content="Chicago food options based on what Instragram users are posting.">
 </svelte:head>
 
 <h1>
