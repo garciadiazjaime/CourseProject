@@ -744,4 +744,5 @@ exports.stop_words = [
   'dm',
   'life',
   'family',
+  'give',
 ];
