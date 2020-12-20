@@ -739,4 +739,9 @@ exports.stop_words = [
   'follow',
   'recipe',
   'takeout',
+  'homemade',
+  'city',
+  'dm',
+  'life',
+  'family',
 ];
