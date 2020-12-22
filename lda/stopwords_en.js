@@ -749,4 +749,6 @@ exports.stop_words = [
   'flavor',
   'full',
   'cream',
+  'grab',
+  'simple',
 ];
