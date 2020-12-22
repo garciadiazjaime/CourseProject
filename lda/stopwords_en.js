@@ -745,4 +745,6 @@ exports.stop_words = [
   'life',
   'family',
   'give',
+  'tasty',
+  'flavor',
 ];

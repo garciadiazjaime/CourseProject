@@ -157,7 +157,7 @@
 <div class="container">
 	<div class="loader"></div>
 	<p>
-		Hold on, let me get you the trending options (topics)...
+		Hold on, let me get you where to eat...
 	</p>
 </div>
 {/if}
