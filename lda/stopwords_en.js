@@ -751,4 +751,5 @@ exports.stop_words = [
   'cream',
   'grab',
   'simple',
+  'fun',
 ];
