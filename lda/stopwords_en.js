@@ -752,4 +752,9 @@ exports.stop_words = [
   'grab',
   'simple',
   'fun',
+  'eve',
+  'merry',
+  'safe',
+  'super',
+  'december',
 ];
