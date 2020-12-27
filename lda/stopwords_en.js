@@ -757,4 +757,10 @@ exports.stop_words = [
   'safe',
   'super',
   'december',
+  'meal',
+  'hope',
+  'sugar',
+  'fresh',
+  '2020',
+  'table',
 ];
