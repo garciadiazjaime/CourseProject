@@ -769,4 +769,9 @@ exports.stop_words = [
   'top',
   'healthy',
   'amazing',
+  'part',
+  'head',
+  'ice',
+  'nye',
+  'work',
 ];
