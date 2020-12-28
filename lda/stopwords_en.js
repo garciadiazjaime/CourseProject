@@ -763,4 +763,7 @@ exports.stop_words = [
   'fresh',
   '2020',
   'table',
+  'onion',
+  'morning',
+  'grateful',
 ];
