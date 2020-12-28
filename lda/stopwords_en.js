@@ -766,4 +766,7 @@ exports.stop_words = [
   'onion',
   'morning',
   'grateful',
+  'top',
+  'healthy',
+  'amazing',
 ];
