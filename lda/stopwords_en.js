@@ -783,4 +783,5 @@ exports.stop_words = [
   'nice',
   'closed',
   'tomorrow',
+  'guys',
 ];
