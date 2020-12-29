@@ -781,4 +781,6 @@ exports.stop_words = [
   'add',
   'gloria',
   'nice',
+  'closed',
+  'tomorrow',
 ];
