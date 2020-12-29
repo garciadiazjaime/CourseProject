@@ -778,4 +778,7 @@ exports.stop_words = [
   'fried',
   'wine',
   'bread',
+  'add',
+  'gloria',
+  'nice',
 ];
