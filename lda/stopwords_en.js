@@ -774,4 +774,8 @@ exports.stop_words = [
   'ice',
   'nye',
   'work',
+  'unique',
+  'fried',
+  'wine',
+  'bread',
 ];
