@@ -784,4 +784,5 @@ exports.stop_words = [
   'closed',
   'tomorrow',
   'guys',
+  '2021',
 ];
