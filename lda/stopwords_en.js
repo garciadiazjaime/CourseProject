@@ -785,4 +785,5 @@ exports.stop_words = [
   'tomorrow',
   'guys',
   '2021',
+  'spot',
 ];
