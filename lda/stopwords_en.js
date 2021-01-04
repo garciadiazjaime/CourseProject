@@ -786,4 +786,10 @@ exports.stop_words = [
   'guys',
   '2021',
   'spot',
+  'january',
+  'health',
+  'post',
+  'share',
+  'hours',
+  'people',
 ];
