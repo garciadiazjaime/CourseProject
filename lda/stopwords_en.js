@@ -795,4 +795,6 @@ exports.stop_words = [
   'park',
   'dinner',
   'sweet',
+  'cheers',
+  'small',
 ];
