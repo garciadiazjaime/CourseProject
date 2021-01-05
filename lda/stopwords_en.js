@@ -797,4 +797,6 @@ exports.stop_words = [
   'sweet',
   'cheers',
   'small',
+  'put',
+  'lot',
 ];
