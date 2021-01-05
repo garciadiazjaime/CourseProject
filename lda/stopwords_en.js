@@ -792,4 +792,7 @@ exports.stop_words = [
   'share',
   'hours',
   'people',
+  'park',
+  'dinner',
+  'sweet',
 ];
