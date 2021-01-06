@@ -799,4 +799,5 @@ exports.stop_words = [
   'small',
   'put',
   'lot',
+  'vinegar',
 ];
