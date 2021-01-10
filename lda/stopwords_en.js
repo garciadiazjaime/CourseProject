@@ -801,4 +801,6 @@ exports.stop_words = [
   'lot',
   'vinegar',
   'house',
+  'birthday',
+  'free',
 ];
