@@ -803,4 +803,8 @@ exports.stop_words = [
   'house',
   'birthday',
   'free',
+  'serving',
+  'valentines',
+  'store',
+  'check',
 ];
