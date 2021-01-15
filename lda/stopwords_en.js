@@ -807,4 +807,6 @@ exports.stop_words = [
   'valentines',
   'store',
   'check',
+  'restaurants',
+  'restaurant',
 ];
